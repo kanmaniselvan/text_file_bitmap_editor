@@ -1,5 +1,21 @@
 module BitmapReaderWriterMethods
   def create_m_x_n_image_file(m, n)
+    image_contents = ""
+    # For the given n rows and m columns
+    # Form the image table and write into the output file.
+    n.times do |i|
+      m.times do
+        image_contents += "O"
+      end
+
+      # Writes into new row.
+      # Don't add new line at the last row.
+      image_contents += "\n" unless i+1 == n
+    end
+
+    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
+      file.write(image_contents)
+    end
   end
 
   def color_x_y_pixels(x, y, color)
@@ -12,6 +28,7 @@ module BitmapReaderWriterMethods
   end
 
   def show_the_file_contents
+    puts File.read(BitmapEditor::OUTPUT_FILE)
   end
 
   def clear_the_file_contents
