@@ -1,4 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.3.4'
-gem 'rspec'
+
+group :test do
+  gem 'rspec'
+end
