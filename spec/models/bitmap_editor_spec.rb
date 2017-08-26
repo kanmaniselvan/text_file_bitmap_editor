@@ -3,7 +3,7 @@ require_relative '../../lib/bitmap_editor.rb'
 
 RSpec.describe BitmapEditor do
   context 'Creates or open a output file in examples/image.txt path' do
-    it 'creates a output file in examples/image.txt path if not present' do
+    it 'creates a output file in `examples/image.txt` path if not present' do
       path_to_image = 'examples/image.txt'
       FileUtils.rm('examples/image.txt')
 
@@ -20,7 +20,7 @@ RSpec.describe BitmapEditor do
     end
   end
 
-  context 'Responding to it\'s attribute and instance methods' do
+  context 'Responds to it\'s instance methods' do
     before(:all) do
       @bitmap_editor = BitmapEditor.new
     end
