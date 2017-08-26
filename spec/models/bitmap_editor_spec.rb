@@ -1,6 +1,5 @@
-require_relative '../../lib/bitmap_reader_writer_methods.rb'
-require_relative '../../lib/bitmap_editor.rb'
 require './errors/feedback_error'
+require './lib/bitmap_command_validator'
 require './lib/bitmap_reader_writer_methods'
 require './lib/bitmap_editor'
 
@@ -10,8 +9,8 @@ RSpec.describe BitmapEditor do
       @bitmap_editor = BitmapEditor.new
     end
 
-    it 'responds to create_m_x_n_image_file method' do
-      expect(@bitmap_editor).to respond_to(:create_m_x_n_image_file).with(2).arguments
+    it 'responds to create_m_x_n_bitmap_image_text_file method' do
+      expect(@bitmap_editor).to respond_to(:create_m_x_n_bitmap_image_text_file).with(2).arguments
     end
 
     it 'responds to color_x_y_pixels method' do

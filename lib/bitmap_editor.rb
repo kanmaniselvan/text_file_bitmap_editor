@@ -1,6 +1,8 @@
 class BitmapEditor
   INPUT_FILE = 'examples/show.txt'
   OUTPUT_FILE = 'examples/image.txt'
+
+  include BitmapCommandValidator
   include BitmapReaderWriterMethods
 
   def run(file)
@@ -9,20 +11,12 @@ class BitmapEditor
     File.open(file).each_with_index do |_line, index|
       line = _line.chomp
       line_args = line.split(' ')
-      case line[0]
+      command = line[0]
+
+      case command
         when 'I'
-          m_value = line_args[1].to_i
-          n_value = line_args[2].to_i
-
-          if m_value < 0 || m_value > 255
-            raise FeedbackError.new 'M value should be between 1 and 250'
-          end
-
-          if n_value < 0 || n_value > 255
-            raise FeedbackError.new 'N value should be between 1 and 250'
-          end
-
-          self.create_m_x_n_image_file(m_value, n_value)
+          validated_inputs = self.send("validate_#{command.downcase}_command_inputs", line_args)
+          self.create_m_x_n_bitmap_image_text_file(*validated_inputs)
 
         when 'L'
 

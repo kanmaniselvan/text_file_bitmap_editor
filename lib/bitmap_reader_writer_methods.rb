@@ -1,5 +1,5 @@
 module BitmapReaderWriterMethods
-  def create_m_x_n_image_file(m, n)
+  def create_m_x_n_bitmap_image_text_file(m, n)
     image_contents = ""
     # For the given n rows and m columns
     # Form the image table and write into the output file.
