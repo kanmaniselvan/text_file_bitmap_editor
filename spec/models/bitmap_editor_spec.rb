@@ -1,5 +1,8 @@
 require_relative '../../lib/bitmap_reader_writer_methods.rb'
 require_relative '../../lib/bitmap_editor.rb'
+require './errors/feedback_error'
+require './lib/bitmap_reader_writer_methods'
+require './lib/bitmap_editor'
 
 RSpec.describe BitmapEditor do
   context 'Responds to it\'s instance methods' do
