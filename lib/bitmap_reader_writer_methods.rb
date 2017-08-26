@@ -15,7 +15,7 @@ module BitmapReaderWriterMethods
   end
 
   def clear_the_file_contents
-    File.open('examples/image.txt', 'w') do |file|
+    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
       file.write('')
     end
   end

@@ -1,8 +1,10 @@
 class BitmapEditor
+  INPUT_FILE = 'examples/show.txt'
+  OUTPUT_FILE = 'examples/image.txt'
   include BitmapReaderWriterMethods
 
   def run(file)
-    return puts 'Please provide correct file in the path `examples/show.txt`' if file.nil? || !File.exists?(file)
+    return puts "Please provide correct file in the path `#{INPUT_FILE}`" if file.nil? || !File.exists?(file)
 
     File.open(file).each_with_index do |_line, index|
       line = _line.chomp
