@@ -18,7 +18,14 @@ module BitmapReaderWriterMethods
     end
   end
 
-  def color_x_y_pixels(x, y, color)
+  def color_x_y_pixels(x, y, color, file_contents)
+    # Replace the exact pixel in x column and y row and write it in the file.
+    file_contents[y-1][x-1] = color
+    image_contents = self.form_string_table_from_pixed_arrays(file_contents)
+
+    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
+      file.write(image_contents)
+    end
   end
 
   def color_vertical_segments(x, y1, y2, color)
@@ -35,5 +42,23 @@ module BitmapReaderWriterMethods
     File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
       file.write('')
     end
+  end
+
+  protected
+  def form_string_table_from_pixed_arrays(file_contents)
+    image_contents = ""
+    row_size = file_contents.size
+
+    # From the given 2D array, join the elements of inner array,
+    # add a new line for each row and then write that into as a string
+    # which can be directly written to the image txt file.
+    # This represent the string table of image txt file.
+    file_contents.each_with_index do |file_array, index|
+      image_contents += file_array.join('')
+
+      image_contents += "\n" unless index+1 == row_size
+    end
+
+    image_contents
   end
 end

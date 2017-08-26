@@ -1,3 +1,4 @@
+require 'pry'
 require './errors/feedback_error'
 require './lib/bitmap_command_validator'
 require './lib/bitmap_reader_writer_methods'
@@ -14,7 +15,7 @@ RSpec.describe BitmapEditor do
     end
 
     it 'responds to color_x_y_pixels method' do
-      expect(@bitmap_editor).to respond_to(:color_x_y_pixels).with(3).arguments
+      expect(@bitmap_editor).to respond_to(:color_x_y_pixels).with(4).arguments
     end
 
     it 'responds to color_vertical_segments method' do
@@ -56,6 +57,16 @@ RSpec.describe BitmapEditor do
 
       # puts adds \n by default at the last. So handle it when reading from the STDOUT
       expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("OOOOO\nOOOOO\nOOOOO\nOOOOO\nOOOOO\nOOOOO\n").to_stdout
+    end
+
+    it 'it colors the pixel in x and y position with the color C' do
+      File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+        file.write('L 1 3 A')
+      end
+
+      @bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))
+
+      expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOOOO\nAOOOO\nOOOOO\nOOOOO\nOOOOO")
     end
 
     it 'clears file content when C is received' do

@@ -19,6 +19,8 @@ class BitmapEditor
           self.create_m_x_n_bitmap_image_text_file(*validated_inputs)
 
         when 'L'
+          validated_inputs = self.send("validate_#{command.downcase}_command_inputs", line_args)
+          self.color_x_y_pixels(*validated_inputs)
 
         when 'V'
 
