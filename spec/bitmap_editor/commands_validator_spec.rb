@@ -97,7 +97,7 @@ RSpec.describe BitmapEditor do
     end
 
     context 'validates H command' do
-      it 'prints error if Y value is not between 1 and Image\'s max column size' do
+      it 'prints error if Y value is not between 1 and Image\'s max row size' do
         File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
           file.write("I 6 12\nH")
         end
@@ -106,7 +106,7 @@ RSpec.describe BitmapEditor do
         expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid H command args: X2 value should be between 1 and 6\n").to_stdout
       end
 
-      it 'prints error if X2 value is not between 1 and Image\'s max row size' do
+      it 'prints error if X2 value is not between 1 and Image\'s max column size' do
         File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
           file.write("I 6 12\nH 2 3")
         end

@@ -3,7 +3,7 @@ require './lib/bitmap_reader_writer_methods'
 require './lib/bitmap_editor'
 
 RSpec.describe BitmapEditor do
-  context 'responds to it\'s reader writer instance methods' do
+  context 'responds to its reader writer instance methods' do
     before(:all) do
       @bitmap_editor = BitmapEditor.new
     end
