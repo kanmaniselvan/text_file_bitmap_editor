@@ -4,12 +4,12 @@ module BitmapCommandValidator
     n_value = line_args[2].to_i
 
     # The bitmap column value and row value should fall with 1 and 250
-    if m_value < 0 || m_value > 255
-      raise FeedbackError.new 'M value should be between 1 and 250'
+    if 0 == m_value || m_value > 250
+      raise FeedbackError.new 'Invalid I command: M value should be between 1 and 250'
     end
 
-    if n_value < 0 || n_value > 255
-      raise FeedbackError.new 'N value should be between 1 and 250'
+    if 0 == n_value || n_value > 250
+      raise FeedbackError.new 'Invalid I command: N value should be between 1 and 250'
     end
 
     # Return the validated values.
@@ -20,7 +20,7 @@ module BitmapCommandValidator
     x_value = line_args[1].to_i
     y_value = line_args[2].to_i
 
-    validate_x_y_range(x_value, y_value, 'Y')
+    validate_x_y_range(x_value, y_value, 'X', 'Y', 'L')
     color_value = validate_color(line_args[3])
 
     [x_value, y_value, color_value, get_m_x_y_array_of_arrays]
@@ -31,11 +31,11 @@ module BitmapCommandValidator
     y1_value = line_args[2].to_i
     y2_value = line_args[3].to_i
 
-    validate_x_y_range(x_value, y2_value, 'Y2')
+    validate_x_y_range(x_value, y2_value, 'X', 'Y2', 'V')
     color_value = validate_color(line_args[4])
 
     if 0 == y1_value || y1_value > y2_value
-      raise FeedbackError.new "Y1 value should be between 1 and #{y2_value}"
+      raise FeedbackError.new "Invalid V command: Y1 value should be between 1 and #{y2_value}"
     end
 
     [x_value, y1_value, y2_value, color_value, get_m_x_y_array_of_arrays]
@@ -46,11 +46,11 @@ module BitmapCommandValidator
     x2_value = line_args[2].to_i
     y_value = line_args[3].to_i
 
-    validate_x_y_range(x2_value, y_value, 'X2')
+    validate_x_y_range(x2_value, y_value, 'X2', 'Y', 'H')
     color_value = validate_color(line_args[4])
 
     if 0 == x1_value || x1_value > x2_value
-      raise FeedbackError.new "X1 value should be between 1 and #{x2_value}"
+      raise FeedbackError.new "Invalid H command: X1 value should be between 1 and #{x2_value}"
     end
 
     [x1_value, x2_value, y_value, color_value, get_m_x_y_array_of_arrays]
@@ -87,20 +87,19 @@ module BitmapCommandValidator
     color_value
   end
 
-  def validate_x_y_range(x_value, y_value, y_value_name)
+  def validate_x_y_range(x_value, y_value, x_value_name, y_value_name, command)
     m_n_value = get_m_n_value_from_bitmap_file
-    # Add 1 to the m and v value, since the pixel index starts from 1
-    m_value = m_n_value[:m_value] + 1
-    n_value = m_n_value[:n_value] + 1
+    m_value = m_n_value[:m_value]
+    n_value = m_n_value[:n_value]
 
     # Validate the x and y value such that it doesn't exceed the
     # written bitmap table in the image txt file.
     if 0 == x_value || x_value > m_value
-      raise FeedbackError.new "X value should be between 1 and #{m_value}"
+      raise FeedbackError.new "Invalid #{command} command: #{x_value_name} value should be between 1 and #{m_value}"
     end
 
     if 0 == y_value || y_value > n_value
-      raise FeedbackError.new "#{y_value_name} value should be between 1 and #{n_value}"
+      raise FeedbackError.new "Invalid #{command} command: #{y_value_name} value should be between 1 and #{n_value}"
     end
   end
 end
