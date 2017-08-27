@@ -54,16 +54,30 @@ RSpec.describe BitmapEditor do
         end
 
         # puts adds \n by default at the last. So handle it when reading from the STDOUT
-        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Color value should be between A and Z\n").to_stdout
+        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid L command: Color value should be between A and Z\n").to_stdout
       end
     end
 
     context 'validates V command' do
+      it 'prints error if the color value is not a alphabet' do
+        File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+          file.write("I 10 10\nV 1 1 1")
+        end
 
+        # puts adds \n by default at the last. So handle it when reading from the STDOUT
+        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid V command: Color value should be between A and Z\n").to_stdout
+      end
     end
 
     context 'validates H command' do
+      it 'prints error if the color value is not a alphabet' do
+        File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+          file.write("I 10 10\nH 2 2 2")
+        end
 
+        # puts adds \n by default at the last. So handle it when reading from the STDOUT
+        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid H command: Color value should be between A and Z\n").to_stdout
+      end
     end
   end
 end

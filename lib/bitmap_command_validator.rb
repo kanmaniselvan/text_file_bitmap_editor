@@ -21,7 +21,7 @@ module BitmapCommandValidator
     y_value = line_args[2].to_i
 
     validate_x_y_range(x_value, y_value, 'X', 'Y', 'L')
-    color_value = validate_color(line_args[3])
+    color_value = validate_color(line_args[3], 'L')
 
     [x_value, y_value, color_value, get_m_x_y_array_of_arrays]
   end
@@ -32,7 +32,7 @@ module BitmapCommandValidator
     y2_value = line_args[3].to_i
 
     validate_x_y_range(x_value, y2_value, 'X', 'Y2', 'V')
-    color_value = validate_color(line_args[4])
+    color_value = validate_color(line_args[4], 'V')
 
     if 0 == y1_value || y1_value > y2_value
       raise FeedbackError.new "Invalid V command: Y1 value should be between 1 and #{y2_value}"
@@ -47,7 +47,7 @@ module BitmapCommandValidator
     y_value = line_args[3].to_i
 
     validate_x_y_range(x2_value, y_value, 'X2', 'Y', 'H')
-    color_value = validate_color(line_args[4])
+    color_value = validate_color(line_args[4], 'H')
 
     if 0 == x1_value || x1_value > x2_value
       raise FeedbackError.new "Invalid H command: X1 value should be between 1 and #{x2_value}"
@@ -76,12 +76,12 @@ module BitmapCommandValidator
       file_contents: file_contents }
   end
 
-  def validate_color(color_arg)
+  def validate_color(color_arg, command)
     color_value = color_arg.to_s.upcase
 
     # Validate the color value to be a proper alphabet
     if '' == color_value || !('A'..'Z').include?(color_value)
-      raise FeedbackError.new 'Color value should be between A and Z'
+      raise FeedbackError.new "Invalid #{command} command: Color value should be between A and Z"
     end
 
     color_value
