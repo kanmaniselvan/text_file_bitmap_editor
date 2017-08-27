@@ -5,11 +5,11 @@ module BitmapCommandValidator
 
     # The bitmap column value and row value should fall with 1 and 250
     if 0 == m_value || m_value > 250
-      raise FeedbackError.new 'Invalid I command: M value should be between 1 and 250'
+      raise FeedbackError.new 'Invalid I command args: M value should be between 1 and 250'
     end
 
     if 0 == n_value || n_value > 250
-      raise FeedbackError.new 'Invalid I command: N value should be between 1 and 250'
+      raise FeedbackError.new 'Invalid I command args: N value should be between 1 and 250'
     end
 
     # Return the validated values.
@@ -32,11 +32,11 @@ module BitmapCommandValidator
     y2_value = line_args[3].to_i
 
     validate_x_y_range(x_value, y2_value, 'X', 'Y2', 'V')
-    color_value = validate_color(line_args[4], 'V')
-
     if 0 == y1_value || y1_value > y2_value
-      raise FeedbackError.new "Invalid V command: Y1 value should be between 1 and #{y2_value}"
+      raise FeedbackError.new "Invalid V command args: Y1 value should be between 1 and #{y2_value}"
     end
+
+    color_value = validate_color(line_args[4], 'V')
 
     [x_value, y1_value, y2_value, color_value, get_m_x_y_array_of_arrays]
   end
@@ -47,11 +47,11 @@ module BitmapCommandValidator
     y_value = line_args[3].to_i
 
     validate_x_y_range(x2_value, y_value, 'X2', 'Y', 'H')
-    color_value = validate_color(line_args[4], 'H')
-
     if 0 == x1_value || x1_value > x2_value
-      raise FeedbackError.new "Invalid H command: X1 value should be between 1 and #{x2_value}"
+      raise FeedbackError.new "Invalid H command args: X1 value should be between 1 and #{x2_value}"
     end
+
+    color_value = validate_color(line_args[4], 'H')
 
     [x1_value, x2_value, y_value, color_value, get_m_x_y_array_of_arrays]
   end
@@ -83,7 +83,7 @@ module BitmapCommandValidator
 
     # Validate the color value to be a proper alphabet
     if '' == color_value || !('A'..'Z').include?(color_value)
-      raise FeedbackError.new "Invalid #{command} command: Color value should be between A and Z"
+      raise FeedbackError.new "Invalid #{command} command args: Color value should be between A and Z"
     end
 
     color_value
@@ -97,11 +97,11 @@ module BitmapCommandValidator
     # Validate the x and y value such that it doesn't exceed the
     # written bitmap table in the image txt file.
     if 0 == x_value || x_value > m_value
-      raise FeedbackError.new "Invalid #{command} command: #{x_value_name} value should be between 1 and #{m_value}"
+      raise FeedbackError.new "Invalid #{command} command args: #{x_value_name} value should be between 1 and #{m_value}"
     end
 
     if 0 == y_value || y_value > n_value
-      raise FeedbackError.new "Invalid #{command} command: #{y_value_name} value should be between 1 and #{n_value}"
+      raise FeedbackError.new "Invalid #{command} command args: #{y_value_name} value should be between 1 and #{n_value}"
     end
   end
 end

@@ -9,7 +9,7 @@ RSpec.describe BitmapEditor do
       @bitmap_editor = BitmapEditor.new
     end
 
-    it 'it create file with M x N table contents written into it' do
+    it 'creates file with M x N table contents written into it' do
       File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
         file.write('I 5 6')
       end
