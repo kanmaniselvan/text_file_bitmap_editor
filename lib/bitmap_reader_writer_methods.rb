@@ -13,25 +13,27 @@ module BitmapReaderWriterMethods
       image_contents += "\n" unless i+1 == n
     end
 
-    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
-      file.write(image_contents)
-    end
+    write_file_contents(image_contents)
   end
 
   def color_x_y_pixels(x, y, color, file_contents)
     # Replace the exact pixel in x column and y row and write it in the file.
     file_contents[y-1][x-1] = color
+
     image_contents = self.form_string_table_from_pixed_arrays(file_contents)
+    write_file_contents(image_contents)
+  end
 
-    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
-      file.write(image_contents)
+  def color_vertical_segments(x, y1, y2, color, file_contents)
+    (y1..y2).each do |pixel_index|
+      file_contents[pixel_index-1][x-1] = color
     end
+
+    image_contents = self.form_string_table_from_pixed_arrays(file_contents)
+    write_file_contents(image_contents)
   end
 
-  def color_vertical_segments(x, y1, y2, color)
-  end
-
-  def color_horizontal_segments(x1, x2, y, color)
+  def color_horizontal_segments(x1, x2, y, color, file_contents)
   end
 
   def show_the_file_contents
@@ -39,9 +41,7 @@ module BitmapReaderWriterMethods
   end
 
   def clear_the_file_contents
-    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
-      file.write('')
-    end
+    write_file_contents('')
   end
 
   protected
@@ -60,5 +60,11 @@ module BitmapReaderWriterMethods
     end
 
     image_contents
+  end
+
+  def write_file_contents(image_contents)
+    File.open(BitmapEditor::OUTPUT_FILE, 'w') do |file|
+      file.write(image_contents)
+    end
   end
 end

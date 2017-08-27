@@ -38,6 +38,17 @@ RSpec.describe BitmapEditor do
       expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOOOO\nAOOOO\nOOOOO\nOOOOO\nOOOOO")
     end
 
+    it 'it draw a vertical segment of colour C in column X between rows Y1 and Y2' do
+      File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+        file.write('V 2 3 6 W')
+      end
+
+      @bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))
+
+      expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOOOO\nAWOOO\nOWOOO\nOWOOO\nOWOOO")
+    end
+
+
     it 'clears file content when C is received' do
       File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
         file.write('C')

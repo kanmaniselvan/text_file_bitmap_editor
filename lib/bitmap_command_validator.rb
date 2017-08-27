@@ -19,9 +19,26 @@ module BitmapCommandValidator
   def validate_l_command_inputs(line_args)
     x_value = line_args[1].to_i
     y_value = line_args[2].to_i
+
+    validate_x_y_range(x_value, y_value, 'Y')
     color_value = validate_color(line_args[3])
 
     [x_value, y_value, color_value, get_m_x_y_array_of_arrays]
+  end
+
+  def validate_v_command_inputs(line_args)
+    x_value = line_args[1].to_i
+    y1_value = line_args[2].to_i
+    y2_value = line_args[3].to_i
+
+    validate_x_y_range(x_value, y2_value, 'Y2')
+    color_value = validate_color(line_args[4])
+
+    if 0 == y1_value || y1_value > y2_value
+      raise FeedbackError.new "Y1 value should be between 1 and #{y2_value}"
+    end
+
+    [x_value, y1_value, y2_value, color_value, get_m_x_y_array_of_arrays]
   end
 
   protected
@@ -55,10 +72,11 @@ module BitmapCommandValidator
     color_value
   end
 
-  def validate_x_y_range(x_value, y_value)
+  def validate_x_y_range(x_value, y_value, y_value_name)
     m_n_value = get_m_n_value_from_bitmap_file
-    m_value = m_n_value[:m_value]
-    n_value = m_n_value[:n_value]
+    # Add 1 to the m and v value, since the pixel index starts from 1
+    m_value = m_n_value[:m_value] + 1
+    n_value = m_n_value[:n_value] + 1
 
     # Validate the x and y value such that it doesn't exceed the
     # written bitmap table in the image txt file.
@@ -67,7 +85,7 @@ module BitmapCommandValidator
     end
 
     if 0 == y_value || y_value > n_value
-      raise FeedbackError.new "Y value should be between 1 and #{n_value}"
+      raise FeedbackError.new "#{y_value_name} value should be between 1 and #{n_value}"
     end
   end
 end

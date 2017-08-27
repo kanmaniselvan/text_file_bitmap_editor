@@ -17,11 +17,11 @@ RSpec.describe BitmapEditor do
     end
 
     it 'responds to color_vertical_segments method' do
-      expect(@bitmap_editor).to respond_to(:color_vertical_segments).with(4).arguments
+      expect(@bitmap_editor).to respond_to(:color_vertical_segments).with(5).arguments
     end
 
     it 'responds to color_horizontal_segments method' do
-      expect(@bitmap_editor).to respond_to(:color_horizontal_segments).with(4).arguments
+      expect(@bitmap_editor).to respond_to(:color_horizontal_segments).with(5).arguments
     end
 
     it 'responds to show_the_file_contents method' do
