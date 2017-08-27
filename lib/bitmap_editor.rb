@@ -27,6 +27,8 @@ class BitmapEditor
           self.color_vertical_segments(*validated_inputs)
 
         when 'H'
+          validated_inputs = self.send("validate_#{command.downcase}_command_inputs", line_args)
+          self.color_horizontal_segments(*validated_inputs)
 
         when 'S'
           self.show_the_file_contents

@@ -19,16 +19,7 @@ RSpec.describe BitmapEditor do
       expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOOOO\nOOOOO\nOOOOO\nOOOOO\nOOOOO")
     end
 
-    it 'shows file content when S is received' do
-      File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
-        file.write('S')
-      end
-
-      # puts adds \n by default at the last. So handle it when reading from the STDOUT
-      expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("OOOOO\nOOOOO\nOOOOO\nOOOOO\nOOOOO\nOOOOO\n").to_stdout
-    end
-
-    it 'it colors the pixel in x and y position with the color C' do
+    it 'colors the pixel in x and y position with the color C' do
       File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
         file.write('L 1 3 A')
       end
@@ -38,7 +29,7 @@ RSpec.describe BitmapEditor do
       expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOOOO\nAOOOO\nOOOOO\nOOOOO\nOOOOO")
     end
 
-    it 'it draw a vertical segment of colour C in column X between rows Y1 and Y2' do
+    it 'draws a vertical segment of colour C in column X between rows Y1 and Y2' do
       File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
         file.write('V 2 3 6 W')
       end
@@ -48,6 +39,24 @@ RSpec.describe BitmapEditor do
       expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOOOO\nAWOOO\nOWOOO\nOWOOO\nOWOOO")
     end
 
+    it 'draws a horizontal segment of colour C in row Y between columns X1 and X2' do
+      File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+        file.write('H 3 5 2 Z')
+      end
+
+      @bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))
+
+      expect(File.read(BitmapEditor::OUTPUT_FILE)).to eq("OOOOO\nOOZZZ\nAWOOO\nOWOOO\nOWOOO\nOWOOO")
+    end
+
+    it 'shows file content when S is received' do
+      File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+        file.write('S')
+      end
+
+      # puts adds \n by default at the last. So handle it when reading from the STDOUT
+      expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("OOOOO\nOOZZZ\nAWOOO\nOWOOO\nOWOOO\nOWOOO\n").to_stdout
+    end
 
     it 'clears file content when C is received' do
       File.open(BitmapEditor::INPUT_FILE, 'w') do |file|

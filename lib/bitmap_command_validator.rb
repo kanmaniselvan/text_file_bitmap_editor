@@ -41,6 +41,21 @@ module BitmapCommandValidator
     [x_value, y1_value, y2_value, color_value, get_m_x_y_array_of_arrays]
   end
 
+  def validate_h_command_inputs(line_args)
+    x1_value = line_args[1].to_i
+    x2_value = line_args[2].to_i
+    y_value = line_args[3].to_i
+
+    validate_x_y_range(x2_value, y_value, 'X2')
+    color_value = validate_color(line_args[4])
+
+    if 0 == x1_value || x1_value > x2_value
+      raise FeedbackError.new "X1 value should be between 1 and #{x2_value}"
+    end
+
+    [x1_value, x2_value, y_value, color_value, get_m_x_y_array_of_arrays]
+  end
+
   protected
   # Split the file contents as 2D arrays, since it will be helpful in
   # finding and coloring the pixel.

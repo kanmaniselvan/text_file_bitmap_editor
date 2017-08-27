@@ -20,20 +20,28 @@ module BitmapReaderWriterMethods
     # Replace the exact pixel in x column and y row and write it in the file.
     file_contents[y-1][x-1] = color
 
-    image_contents = self.form_string_table_from_pixed_arrays(file_contents)
+    image_contents = form_string_table_from_pixed_arrays(file_contents)
     write_file_contents(image_contents)
   end
 
   def color_vertical_segments(x, y1, y2, color, file_contents)
+    # Replace the vertical segment with the given color in column X between rows Y1 and Y2
     (y1..y2).each do |pixel_index|
       file_contents[pixel_index-1][x-1] = color
     end
 
-    image_contents = self.form_string_table_from_pixed_arrays(file_contents)
+    image_contents = form_string_table_from_pixed_arrays(file_contents)
     write_file_contents(image_contents)
   end
 
   def color_horizontal_segments(x1, x2, y, color, file_contents)
+    # Replace the horizontal segment with the given color in row Y between columns X1 and X2
+    (x1..x2).each do |pixel_index|
+      file_contents[y-1][pixel_index-1] = color
+    end
+
+    image_contents = form_string_table_from_pixed_arrays(file_contents)
+    write_file_contents(image_contents)
   end
 
   def show_the_file_contents
