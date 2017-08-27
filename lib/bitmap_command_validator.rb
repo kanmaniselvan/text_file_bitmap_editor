@@ -68,8 +68,10 @@ module BitmapCommandValidator
   # This return the column and row pixel of the image file.
   def get_m_n_value_from_bitmap_file
     file_contents = File.read(BitmapEditor::OUTPUT_FILE).split("\n")
-    m_value = file_contents.size
-    n_value = file_contents.first.split('').size
+    # Row size
+    n_value = file_contents.size
+    # Column Size
+    m_value = file_contents.first.split('').size
 
     { m_value: m_value,
       n_value: n_value,
