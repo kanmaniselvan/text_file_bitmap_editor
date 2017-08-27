@@ -97,6 +97,33 @@ RSpec.describe BitmapEditor do
     end
 
     context 'validates H command' do
+      it 'prints error if Y value is not between 1 and Image\'s max column size' do
+        File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+          file.write("I 6 12\nH")
+        end
+
+        # puts adds \n by default at the last. So handle it when reading from the STDOUT
+        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid H command args: X2 value should be between 1 and 6\n").to_stdout
+      end
+
+      it 'prints error if X2 value is not between 1 and Image\'s max row size' do
+        File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+          file.write("I 6 12\nH 2 3")
+        end
+
+        # puts adds \n by default at the last. So handle it when reading from the STDOUT
+        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid H command args: Y value should be between 1 and 12\n").to_stdout
+      end
+
+      it 'prints error if X1 is greater than X2 value value' do
+        File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
+          file.write("I 6 12\nH 4 3 2")
+        end
+
+        # puts adds \n by default at the last. So handle it when reading from the STDOUT
+        expect{@bitmap_editor.run(File.open(BitmapEditor::INPUT_FILE))}.to output("Invalid H command args: X1 value should be between 1 and 3\n").to_stdout
+      end
+
       it 'prints error if the color value is not a alphabet' do
         File.open(BitmapEditor::INPUT_FILE, 'w') do |file|
           file.write("I 10 10\nH 2 2 2")
