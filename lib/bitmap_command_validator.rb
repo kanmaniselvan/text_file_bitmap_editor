@@ -19,11 +19,47 @@ module BitmapCommandValidator
   def validate_l_command_inputs(line_args)
     x_value = line_args[1].to_i
     y_value = line_args[2].to_i
-    color_value = line_args[3].to_s.upcase
+    color_value = validate_color(line_args[3])
 
+    [x_value, y_value, color_value, get_m_x_y_array_of_arrays]
+  end
+
+  protected
+  # Split the file contents as 2D arrays, since it will be helpful in
+  # finding and coloring the pixel.
+  def get_m_x_y_array_of_arrays
+    get_m_n_value_from_bitmap_file[:file_contents].map do |file_content|
+      file_content.split('')
+    end
+  end
+
+  # This return the column and row pixel of the image file.
+  def get_m_n_value_from_bitmap_file
     file_contents = File.read(BitmapEditor::OUTPUT_FILE).split("\n")
     m_value = file_contents.size
     n_value = file_contents.first.split('').size
+
+    { m_value: m_value,
+      n_value: n_value,
+      file_contents: file_contents }
+  end
+
+  def validate_color(color_arg)
+    color_value = color_arg.to_s.upcase
+
+    # Validate the color value to be a proper alphabet
+    if '' == color_value || !('A'..'Z').include?(color_value)
+      raise FeedbackError.new 'Color value should be between A and Z'
+    end
+
+    color_value
+  end
+
+  def validate_x_y_range(x_value, y_value)
+    m_n_value = get_m_n_value_from_bitmap_file
+    m_value = m_n_value[:m_value]
+    n_value = m_n_value[:n_value]
+
     # Validate the x and y value such that it doesn't exceed the
     # written bitmap table in the image txt file.
     if 0 == x_value || x_value > m_value
@@ -33,18 +69,5 @@ module BitmapCommandValidator
     if 0 == y_value || y_value > n_value
       raise FeedbackError.new "Y value should be between 1 and #{n_value}"
     end
-
-    # Validate the color value to be a proper alphabet
-    if '' == color_value || !('A'..'Z').include?(color_value)
-      raise FeedbackError.new 'Color value should be between A and Z'
-    end
-
-    # Split the file contents as 2D arrays, since it will be helpful in
-    # finding and coloring the pixel.
-    m_x_y_array_of_arrays = file_contents.map do |file_content|
-      file_content.split('')
-    end
-
-    [x_value, y_value, color_value, m_x_y_array_of_arrays]
   end
 end
